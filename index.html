@@ -1,4 +1,72 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robot T.Koi - Live Voice Classroom AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(160deg, #FDECC8 0%, #F7DFA9 55%, #F2D28E 100%);
+    }
+
+    @keyframes robotFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+    @keyframes robotTalk {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-5px) rotate(-1.5deg); }
+      75% { transform: translateY(-3px) rotate(1.5deg); }
+    }
+    @keyframes headBoop {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.08, 0.92); }
+      65% { transform: scale(0.96, 1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes mouthTalk {
+      0%, 100% { transform: scaleY(0.45); }
+      50% { transform: scaleY(1.18); }
+    }
+    @keyframes armLeft {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(10deg); }
+    }
+    @keyframes armRight {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-10deg); }
+    }
+    @keyframes antennaWiggle {
+      0%, 100% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+    }
+    @keyframes emojiPop {
+      0% { opacity: 0; transform: translate(-50%, 18px) scale(0.5); }
+      35% { opacity: 1; transform: translate(-50%, -20px) scale(1.3); }
+      100% { opacity: 0; transform: translate(-50%, -50px) scale(1); }
+    }
+    @keyframes bounceDot {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+    }
+
+    .animate-robot-float { animation: robotFloat 3.4s ease-in-out infinite; }
+    .animate-robot-talk { animation: robotTalk 0.6s ease-in-out infinite; }
+    .animate-head-boop { animation: headBoop 0.55s ease-out; }
+    .animate-mouth-talk { animation: mouthTalk 0.24s ease-in-out infinite; transform-origin: 140px 122px; }
+    .animate-arm-left { animation: armLeft 0.6s ease-in-out infinite; transform-origin: 78px 195px; }
+    .animate-arm-right { animation: armRight 0.6s ease-in-out infinite; transform-origin: 202px 195px; }
+    .animate-antenna-wiggle { animation: antennaWiggle 0.35s ease-in-out infinite; transform-origin: 140px 44px; }
+    .animate-emoji-pop { animation: emojiPop 1.05s ease-out forwards; }
+    .animate-bounce-dot-1 { animation: bounceDot 1s infinite 0s; }
+    .animate-bounce-dot-2 { animation: bounceDot 1s infinite 0.16s; }
+    .animate-bounce-dot-3 { animation: bounceDot 1s infinite 0.32s; }
+  </style>
 </head>
 <body class="w-full min-h-screen overflow-x-hidden p-2 sm:p-4 flex flex-col items-center justify-center">
 
@@ -6,7 +74,31 @@
   <div class="relative w-full max-w-5xl min-h-[calc(100vh-1rem)] sm:min-h-[calc(100vh-2rem)] flex flex-col justify-between rounded-[2rem] sm:rounded-[2.5rem] border-4 border-sky-200/90 bg-gradient-to-b from-[#FCE9BE] via-[#F7DFAC] to-[#F3D598] p-4 sm:p-6 shadow-[0_20px_50px_rgba(146,98,25,0.2)]">
 
     <!-- Top Row: Status Pill, Tap Head Hint, API Key Settings Button -->
-<!-- ... existing code ... -->
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 rounded-full border-2 border-sky-200 bg-white/95 px-3.5 py-1.5 shadow-sm">
+        <span id="statusDot" class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+        <span id="statusPillText" class="text-xs sm:text-sm font-extrabold text-blue-800">Ready with Real Voice! 🤖</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="hidden sm:inline-flex items-center gap-1 rounded-full bg-amber-900/10 px-3 py-1 text-xs font-bold text-amber-900/70">
+          👆 Tap head!
+        </span>
+        <button
+          id="openSettingsBtn"
+          type="button"
+          title="API Key & Teacher Settings"
+          class="flex items-center gap-1.5 rounded-full border-2 border-blue-200 bg-white/95 px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-blue-700 shadow-sm transition hover:bg-blue-50 active:scale-95"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>API Key</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Floating Emoji Burst -->
     <div id="burstEmoji" class="pointer-events-none hidden absolute left-1/2 top-28 z-30 -translate-x-1/2 text-6xl sm:text-7xl"></div>
 
@@ -27,7 +119,174 @@
       >
         <svg viewBox="0 0 280 290" fill="none" class="w-full max-h-[46vh] sm:max-h-[52vh] h-auto drop-shadow-[0_16px_26px_rgba(120,80,20,0.22)]">
           <defs>
-<!-- ... existing code ... -->
+            <linearGradient id="shirtGrad" x1="75" y1="165" x2="205" y2="275" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#2563EB" />
+              <stop offset="100%" stop-color="#1D4ED8" />
+            </linearGradient>
+            <linearGradient id="armGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2563EB" />
+              <stop offset="100%" stop-color="#1E40AF" />
+            </linearGradient>
+            <linearGradient id="headShell" x1="70" y1="55" x2="210" y2="165" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FFFFFF" />
+              <stop offset="100%" stop-color="#E2E8F0" />
+            </linearGradient>
+            <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="2.5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Top Antenna -->
+          <g id="robotAntenna">
+            <line x1="140" y1="45" x2="140" y2="26" stroke="#1E3A8A" stroke-width="4.5" stroke-linecap="round" />
+            <circle cx="140" cy="21" r="8" fill="#38BDF8" stroke="#1D4ED8" stroke-width="3" />
+            <circle cx="137.5" cy="18.5" r="2.5" fill="#E0F2FE" />
+          </g>
+
+          <!-- Left & Right Arms -->
+          <g id="armLeft">
+            <rect x="44" y="182" width="38" height="58" rx="19" fill="url(#armGrad)" stroke="#1E3A8A" stroke-width="3.5" />
+            <circle cx="62" cy="236" r="14" fill="#E2E8F0" stroke="#64748B" stroke-width="3.5" />
+          </g>
+          <g id="armRight">
+            <rect x="198" y="182" width="38" height="58" rx="19" fill="url(#armGrad)" stroke="#1E3A8A" stroke-width="3.5" />
+            <circle cx="218" cy="236" r="14" fill="#E2E8F0" stroke="#64748B" stroke-width="3.5" />
+          </g>
+
+          <!-- Torso / Blue KidsDuo Polo Shirt -->
+          <path
+            d="M72 192 C72 175 88 166 140 166 C192 166 208 175 208 192 L212 260 C212 271 202 276 140 276 C78 276 68 271 68 260 Z"
+            fill="url(#shirtGrad)"
+            stroke="#1E3A8A"
+            stroke-width="3.5"
+          />
+
+          <!-- Polo Collar & Placket -->
+          <path d="M116 167 L110 190 L132 184 Z" fill="#1D4ED8" stroke="#1E3A8A" stroke-width="2.5" stroke-linejoin="round" />
+          <path d="M164 167 L170 190 L148 184 Z" fill="#1D4ED8" stroke="#1E3A8A" stroke-width="2.5" stroke-linejoin="round" />
+          <rect x="132" y="182" width="16" height="34" rx="4" fill="#1D4ED8" stroke="#1E3A8A" stroke-width="2" />
+          <circle cx="140" cy="193" r="2.6" fill="#E0F2FE" />
+          <circle cx="140" cy="204" r="2.6" fill="#E0F2FE" />
+
+          <!-- Subtle Shoulder Bolts -->
+          <circle cx="88" cy="186" r="3.5" fill="#93C5FD" />
+          <circle cx="192" cy="186" r="3.5" fill="#93C5FD" />
+
+          <!-- Colorful KidsDuo Chest Badge -->
+          <rect x="159" y="201" width="36" height="15" rx="7.5" fill="#1E3A8A" opacity="0.8" />
+          <text x="177" y="212" text-anchor="middle" font-size="8.2" font-weight="900" font-family="sans-serif">
+            <tspan fill="#FB7185">K</tspan>
+            <tspan fill="#FBBF24">i</tspan>
+            <tspan fill="#34D399">d</tspan>
+            <tspan fill="#38BDF8">s</tspan>
+            <tspan fill="#A78BFA">D</tspan>
+            <tspan fill="#F472B6">u</tspan>
+            <tspan fill="#60A5FA">o</tspan>
+          </text>
+
+          <!-- Neck -->
+          <rect x="124" y="154" width="32" height="18" rx="7" fill="#94A3B8" stroke="#475569" stroke-width="3.5" />
+
+          <!-- Lanyard Strap -->
+          <path d="M117 167 L134 226" stroke="#60A5FA" stroke-width="6" stroke-linecap="round" />
+          <path d="M163 167 L146 226" stroke="#60A5FA" stroke-width="6" stroke-linecap="round" />
+          <rect x="134" y="222" width="12" height="8" rx="3" fill="#0F172A" />
+
+          <!-- Teacher ID Card Badge -->
+          <rect x="108" y="228" width="64" height="39" rx="9" fill="#FFFFFF" stroke="#38BDF8" stroke-width="3.5" />
+          <path d="M110 237 C110 232 113 230 118 230 L162 230 C167 230 170 232 170 237 L170 241 L110 241 Z" fill="#0284C7" />
+          <text x="140" y="238" text-anchor="middle" fill="#FFFFFF" font-size="6.8" font-weight="800" letter-spacing="0.8">
+            TEACHER
+          </text>
+          <text id="badgeNameText" x="140" y="259" text-anchor="middle" fill="#1D4ED8" font-size="14.5" font-weight="900" letter-spacing="0.5">
+            T.KOI
+          </text>
+
+          <!-- Blue Robot Ear Pods -->
+          <rect x="58" y="88" width="18" height="38" rx="8" fill="#2563EB" stroke="#1E3A8A" stroke-width="3.5" />
+          <circle cx="66" cy="107" r="4" fill="#38BDF8" />
+          <rect x="204" y="88" width="18" height="38" rx="8" fill="#2563EB" stroke="#1E3A8A" stroke-width="3.5" />
+          <circle cx="214" cy="107" r="4" fill="#38BDF8" />
+
+          <!-- White Rounded Robot Head -->
+          <rect x="70" y="54" width="140" height="104" rx="40" fill="url(#headShell)" stroke="#475569" stroke-width="3.5" />
+
+          <!-- Dark Face Visor Screen -->
+          <rect x="85" y="70" width="110" height="72" rx="26" fill="#0F172A" stroke="#38BDF8" stroke-width="3.5" />
+
+          <!-- Eyes: Normal -->
+          <g id="eyesNormal" filter="url(#cyanGlow)">
+            <circle cx="117" cy="100" r="11.5" fill="#38BDF8" />
+            <circle cx="113" cy="95.5" r="3.8" fill="#FFFFFF" />
+            <circle cx="163" cy="100" r="11.5" fill="#38BDF8" />
+            <circle cx="159" cy="95.5" r="3.8" fill="#FFFFFF" />
+          </g>
+
+          <!-- Eyes: Blinking -->
+          <g id="eyesBlink" style="display:none" stroke="#38BDF8" stroke-width="5" stroke-linecap="round">
+            <line x1="106" y1="101" x2="128" y2="101" />
+            <line x1="152" y1="101" x2="174" y2="101" />
+          </g>
+
+          <!-- Eyes: Happy Arcs (Head Tapped) -->
+          <g id="eyesHappy" style="display:none" filter="url(#cyanGlow)" stroke="#38BDF8" stroke-width="5" stroke-linecap="round" fill="none">
+            <path d="M107 104 Q117 91 127 104" />
+            <path d="M153 104 Q163 91 173 104" />
+          </g>
+
+          <!-- Eyes: Thinking Dots -->
+          <g id="eyesThinking" style="display:none" filter="url(#cyanGlow)">
+            <circle cx="118" cy="101" r="5" fill="#38BDF8" class="animate-bounce-dot-1" />
+            <circle cx="140" cy="101" r="5" fill="#60A5FA" class="animate-bounce-dot-2" />
+            <circle cx="162" cy="101" r="5" fill="#FBBF24" class="animate-bounce-dot-3" />
+          </g>
+
+          <!-- Cute Pink Cheek Blush -->
+          <ellipse cx="101" cy="119" rx="7.5" ry="4" fill="#F43F5E" opacity="0.65" />
+          <ellipse cx="179" cy="119" rx="7.5" ry="4" fill="#F43F5E" opacity="0.65" />
+
+          <!-- Mouth: Smile -->
+          <path
+            id="mouthSmile"
+            d="M123 119 Q140 133 157 119"
+            stroke="#38BDF8"
+            stroke-width="5"
+            stroke-linecap="round"
+            fill="none"
+            filter="url(#cyanGlow)"
+          />
+
+          <!-- Mouth: Talking -->
+          <ellipse
+            id="mouthTalk"
+            style="display:none"
+            cx="140"
+            cy="122"
+            rx="14"
+            ry="8"
+            fill="#38BDF8"
+            filter="url(#cyanGlow)"
+            class="animate-mouth-talk"
+          />
+
+          <!-- Teacher Koi's Stylish Dark Parted Hair -->
+          <path
+            d="M72 86 C68 58 92 40 124 41 C138 35 162 35 178 44 C202 52 212 68 208 88 C202 78 190 72 174 68 C156 64 146 60 138 56 C130 64 114 67 98 70 C85 73 77 78 72 86 Z"
+            fill="#111827"
+            stroke="#0F172A"
+            stroke-width="2.5"
+            stroke-linejoin="round"
+          />
+          <path d="M98 54 Q116 48 130 52" stroke="#475569" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7" />
+          <path d="M152 46 Q172 48 186 58" stroke="#475569" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7" />
+        </svg>
+      </button>
+    </div>
+
     <!-- Bottom Controls Container -->
     <div class="w-full max-w-3xl mx-auto">
       <!-- Speech Bubble Card -->
@@ -53,7 +312,48 @@
       </div>
 
       <!-- Error Message Banner -->
-<!-- ... existing code ... -->
+      <div id="errorBanner" class="hidden mt-3 flex items-center gap-2 rounded-2xl border border-rose-300 bg-rose-50 px-4 py-2 text-xs sm:text-sm font-bold text-rose-700">
+        <span aria-hidden="true">⚠️</span>
+        <span id="errorText"></span>
+      </div>
+
+      <!-- Live Voice Conversation Controls -->
+      <div class="mt-3.5 sm:mt-4 flex flex-wrap items-center justify-center gap-3">
+        <button
+          id="startTalkBtn"
+          type="button"
+          class="flex items-center gap-2.5 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-8 py-3.5 text-base sm:text-lg font-black text-white shadow-[0_6px_0_#1e3a8a] transition hover:brightness-105 active:translate-y-1 active:shadow-[0_2px_0_#1e3a8a]"
+        >
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+          <span id="startTalkLabel">Start Talking with Robot T.Koi!</span>
+        </button>
+
+        <div id="liveControls" class="hidden flex flex-wrap items-center justify-center gap-3">
+          <button
+            id="muteMicBtn"
+            type="button"
+            class="flex items-center gap-2 rounded-full bg-white text-blue-800 border-2 border-blue-200 px-5 py-3 text-sm sm:text-base font-extrabold shadow-[0_4px_0_#bfdbfe] transition active:translate-y-0.5"
+          >
+            <span id="muteMicIcon">🎤</span>
+            <span id="muteMicLabel">Mute Mic</span>
+          </button>
+
+          <button
+            id="endChatBtn"
+            type="button"
+            class="flex items-center gap-2 rounded-full bg-rose-500 px-6 py-3 text-sm sm:text-base font-black text-white shadow-[0_4px_0_#9f1239] transition hover:bg-rose-400 active:translate-y-0.5"
+          >
+            <span>📞</span>
+            <span>End Chat</span>
+          </button>
+        </div>
+      </div>
+
       <!-- T.KOI MAGIC BUTTONS -->
       <div class="mt-4 sm:mt-5">
         <div class="mb-2.5 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-black uppercase tracking-widest text-slate-500">
@@ -95,4 +395,852 @@
   </div>
 
   <!-- Teacher Settings & API Key Modal -->
-<!-- ... existing code ... -->
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-3xl border-4 border-amber-200 bg-white p-6 text-slate-800 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-extrabold text-slate-900">⚙️ Teacher Settings</h2>
+          <p class="text-xs font-medium text-slate-500">Gemini API Key & Robot Voice</p>
+        </div>
+        <button
+          id="closeSettingsBtn"
+          type="button"
+          aria-label="Close settings"
+          class="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 font-bold"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form id="settingsForm" class="space-y-4">
+        <div class="rounded-2xl border-2 border-blue-100 bg-blue-50/70 p-3.5">
+          <label for="inputApiKey" class="mb-1.5 block text-xs font-extrabold uppercase tracking-wider text-blue-700">
+            🔑 Gemini API Key
+          </label>
+          <input
+            id="inputApiKey"
+            type="password"
+            placeholder="Paste your Gemini API key (AIza...)"
+            class="w-full rounded-xl border border-blue-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:border-blue-500 focus:outline-none"
+          />
+          <p class="mt-1.5 text-[11px] text-slate-500">
+            Saved locally in your browser. Powers live AI replies and Gemini Real Voice TTS!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="inputRobotName" class="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">
+              Robot Name
+            </label>
+            <input
+              id="inputRobotName"
+              type="text"
+              class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-800 focus:border-blue-400 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label for="inputBadgeName" class="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">
+              ID Badge Text
+            </label>
+            <input
+              id="inputBadgeName"
+              type="text"
+              class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-800 focus:border-blue-400 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5">
+          <div>
+            <p class="text-sm font-bold text-slate-800">Gemini Real Voice (TTS)</p>
+            <p class="text-[11px] text-slate-500">Falls back to browser voice if offline</p>
+          </div>
+          <input id="inputUseGeminiVoice" type="checkbox" class="h-5 w-5 accent-blue-600 cursor-pointer" />
+        </div>
+
+        <div id="voiceSelectWrap">
+          <label for="inputVoiceName" class="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">
+            Robot Voice Style
+          </label>
+          <select
+            id="inputVoiceName"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-800 focus:border-blue-400 focus:outline-none"
+          >
+            <option value="Puck">Puck (Upbeat &amp; Fun)</option>
+            <option value="Fenrir">Fenrir (Excitable)</option>
+            <option value="Zephyr">Zephyr (Bright)</option>
+            <option value="Kore">Kore (Clear &amp; Firm)</option>
+            <option value="Aoede">Aoede (Breezy)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="inputPersonaNote" class="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">
+            Teacher Persona Note
+          </label>
+          <textarea
+            id="inputPersonaNote"
+            rows="2"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 focus:border-blue-400 focus:outline-none"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button
+            id="resetSettingsBtn"
+            type="button"
+            class="rounded-xl px-3 py-2 text-xs font-bold text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+          >
+            ↺ Reset
+          </button>
+          <button
+            type="submit"
+            class="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-extrabold text-white shadow-md hover:bg-blue-500 active:scale-95"
+          >
+            ✓ Save Settings
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      /* ======================================================================
+         1. SETTINGS & MAGIC BUTTON DATA
+         ====================================================================== */
+      const STORAGE_KEY = 'robot_tkoi_cloudflare_settings_v1';
+
+      const DEFAULT_SETTINGS = {
+        robotName: 'Robot T.Koi',
+        badgeName: 'T.KOI',
+        apiKey: '',
+        useGeminiVoice: true,
+        voiceName: 'Puck',
+        personaNote:
+          'You are the cheerful, silly, encouraging robot version of Teacher Koi at KidsDuo! You LOVE Carbonara, Pizza, and saying "BABUBABU!" when excited. Chat with students in simple, fun, kid-friendly English.',
+      };
+
+      const MAGIC_DATA = {
+        carbonara: {
+          emoji: '🍝',
+          lines: [
+            'CARBONARA! Oh yeah! Creamy, cheesy, yummy carbonara is the BEST pasta in the whole universe!',
+            'Did someone say CARBONARA?! My robot tummy is rumbling! Beep boop, pass me a giant fork!',
+            'CARBONARA power activated! Eat your carbonara and become a superstar today!',
+          ],
+        },
+        pizza: {
+          emoji: '🍕',
+          lines: [
+            'PIZZA!!! Extra cheese, extra yummy! Who wants a giant pizza party with Robot T.Koi?!',
+            'PIZZA!!! Beep boop! Even robots love hot, cheesy pizza! What is your favorite topping?',
+            'WHOA! PIZZA time! One slice for you, and ten slices for Robot T.Koi! Haha, just kidding!',
+          ],
+        },
+        babubabu: {
+          emoji: '🤪',
+          lines: [
+            'BABUBABU! Hahaha! Oh no, you pressed the silly button! Babubabu beep boop!',
+            'BABUBABU! My robot circuits are going super silly! Say babubabu with me! BABUBABU!',
+            'WOOHOO! BABUBABU! That is the secret magic giggle word of Teacher Koi!',
+          ],
+        },
+      };
+
+      const TAP_HEAD_LINES = [
+        'Hehe! That tickles my antenna! Beep boop!',
+        'Boing! Hey superstars, watch the hair! Haha!',
+        'Whoa! You booped Robot T.Koi! Babubabu!',
+        'Beep boop! High five! Ready to chat?',
+      ];
+
+      function loadSettings() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : { ...DEFAULT_SETTINGS };
+        } catch {
+          return { ...DEFAULT_SETTINGS };
+        }
+      }
+
+      function saveSettings(next) {
+        settings = next;
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+        } catch {
+          // Ignore storage restrictions
+        }
+        applySettingsToUI();
+      }
+
+      /* ======================================================================
+         2. APPLICATION STATE & DOM REFERENCES
+         ====================================================================== */
+      let settings = loadSettings();
+      let status = 'idle'; // idle | listening | thinking | speaking
+      let isLive = false;
+      let isMuted = false;
+      let isBlinking = false;
+      let isHeadTapped = false;
+      let currentRobotSpeech = 'Hello superstars! I am Robot T.Koi!';
+      let history = [];
+
+      let recognition = null;
+      let audioEl = null;
+      let audioUrl = null;
+      let micStream = null;
+      let audioCtx = null;
+      let rafId = null;
+
+      const el = {
+        statusDot: document.getElementById('statusDot'),
+        statusPillText: document.getElementById('statusPillText'),
+        burstEmoji: document.getElementById('burstEmoji'),
+        listeningHalo: document.getElementById('listeningHalo'),
+        robotTapBtn: document.getElementById('robotTapBtn'),
+        robotAntenna: document.getElementById('robotAntenna'),
+        armLeft: document.getElementById('armLeft'),
+        armRight: document.getElementById('armRight'),
+        badgeNameText: document.getElementById('badgeNameText'),
+        eyesNormal: document.getElementById('eyesNormal'),
+        eyesBlink: document.getElementById('eyesBlink'),
+        eyesHappy: document.getElementById('eyesHappy'),
+        eyesThinking: document.getElementById('eyesThinking'),
+        mouthSmile: document.getElementById('mouthSmile'),
+        mouthTalk: document.getElementById('mouthTalk'),
+        robotSpeechText: document.getElementById('robotSpeechText'),
+        studentSpeechText: document.getElementById('studentSpeechText'),
+        replayVoiceBtn: document.getElementById('replayVoiceBtn'),
+        errorBanner: document.getElementById('errorBanner'),
+        errorText: document.getElementById('errorText'),
+        startTalkBtn: document.getElementById('startTalkBtn'),
+        startTalkLabel: document.getElementById('startTalkLabel'),
+        liveControls: document.getElementById('liveControls'),
+        muteMicBtn: document.getElementById('muteMicBtn'),
+        muteMicIcon: document.getElementById('muteMicIcon'),
+        muteMicLabel: document.getElementById('muteMicLabel'),
+        endChatBtn: document.getElementById('endChatBtn'),
+        openSettingsBtn: document.getElementById('openSettingsBtn'),
+        closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+        settingsModal: document.getElementById('settingsModal'),
+        settingsForm: document.getElementById('settingsForm'),
+        resetSettingsBtn: document.getElementById('resetSettingsBtn'),
+        inputApiKey: document.getElementById('inputApiKey'),
+        inputRobotName: document.getElementById('inputRobotName'),
+        inputBadgeName: document.getElementById('inputBadgeName'),
+        inputUseGeminiVoice: document.getElementById('inputUseGeminiVoice'),
+        inputVoiceName: document.getElementById('inputVoiceName'),
+        voiceSelectWrap: document.getElementById('voiceSelectWrap'),
+        inputPersonaNote: document.getElementById('inputPersonaNote'),
+      };
+
+      /* ======================================================================
+         3. UI RENDERING HELPERS
+         ====================================================================== */
+      function showError(msg) {
+        if (!msg) {
+          el.errorBanner.classList.add('hidden');
+          el.errorText.textContent = '';
+          return;
+        }
+        el.errorText.textContent = msg;
+        el.errorBanner.classList.remove('hidden');
+      }
+
+      function applySettingsToUI() {
+        el.badgeNameText.textContent = (settings.badgeName || 'T.KOI').slice(0, 7);
+        el.startTalkLabel.textContent = `Start Talking with ${settings.robotName}!`;
+        updateVisualState();
+      }
+
+      function setStatus(nextStatus) {
+        status = nextStatus;
+        updateVisualState();
+      }
+
+      function updateVisualState() {
+        const isSpeaking = status === 'speaking';
+        const isListening = status === 'listening' && !isMuted;
+        const isThinking = status === 'thinking';
+
+        // Status pill text & dot
+        if (isSpeaking) {
+          el.statusPillText.textContent = `${settings.robotName} is talking! 🔊`;
+          el.statusDot.className = 'h-2.5 w-2.5 rounded-full bg-amber-500 animate-pulse';
+        } else if (isThinking) {
+          el.statusPillText.textContent = 'Thinking... 💭';
+          el.statusDot.className = 'h-2.5 w-2.5 rounded-full bg-sky-500 animate-pulse';
+        } else if (status === 'listening') {
+          el.statusPillText.textContent = isMuted ? 'Mic Muted 🔇' : 'Listening to you! 🎤';
+          el.statusDot.className = isMuted
+            ? 'h-2.5 w-2.5 rounded-full bg-slate-400'
+            : 'h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping';
+        } else {
+          el.statusPillText.textContent = 'Ready with Real Voice! 🤖';
+          el.statusDot.className = 'h-2.5 w-2.5 rounded-full bg-emerald-500';
+        }
+
+        // Listening halo
+        el.listeningHalo.classList.toggle('hidden', !isListening);
+
+        // Robot body animation
+        el.robotTapBtn.classList.remove('animate-robot-float', 'animate-robot-talk', 'animate-head-boop');
+        if (isHeadTapped) {
+          el.robotTapBtn.classList.add('animate-head-boop');
+        } else if (isSpeaking) {
+          el.robotTapBtn.classList.add('animate-robot-talk');
+        } else {
+          el.robotTapBtn.classList.add('animate-robot-float');
+        }
+
+        // Arms & antenna
+        el.armLeft.classList.toggle('animate-arm-left', isSpeaking || isHeadTapped);
+        el.armRight.classList.toggle('animate-arm-right', isSpeaking || isHeadTapped);
+        el.robotAntenna.classList.toggle('animate-antenna-wiggle', isThinking || isHeadTapped);
+
+        // Eyes
+        el.eyesNormal.style.display = 'none';
+        el.eyesBlink.style.display = 'none';
+        el.eyesHappy.style.display = 'none';
+        el.eyesThinking.style.display = 'none';
+        if (isThinking) {
+          el.eyesThinking.style.display = 'block';
+        } else if (isHeadTapped) {
+          el.eyesHappy.style.display = 'block';
+        } else if (isBlinking) {
+          el.eyesBlink.style.display = 'block';
+        } else {
+          el.eyesNormal.style.display = 'block';
+        }
+
+        // Mouth
+        el.mouthSmile.style.display = isSpeaking ? 'none' : 'block';
+        el.mouthTalk.style.display = isSpeaking ? 'block' : 'none';
+
+        // Live controls visibility
+        el.startTalkBtn.classList.toggle('hidden', isLive);
+        el.liveControls.classList.toggle('hidden', !isLive);
+
+        // Mute button look
+        if (isMuted) {
+          el.muteMicBtn.className =
+            'flex items-center gap-2 rounded-full bg-amber-500 text-white px-5 py-3 text-sm sm:text-base font-extrabold shadow-[0_4px_0_#b45309] transition active:translate-y-0.5';
+          el.muteMicIcon.textContent = '🔇';
+          el.muteMicLabel.textContent = 'Unmute Mic';
+        } else {
+          el.muteMicBtn.className =
+            'flex items-center gap-2 rounded-full bg-white text-blue-800 border-2 border-blue-200 px-5 py-3 text-sm sm:text-base font-extrabold shadow-[0_4px_0_#bfdbfe] transition active:translate-y-0.5';
+          el.muteMicIcon.textContent = '🎤';
+          el.muteMicLabel.textContent = 'Mute Mic';
+        }
+      }
+
+      function triggerBurst(emoji) {
+        el.burstEmoji.textContent = emoji;
+        el.burstEmoji.classList.remove('hidden', 'animate-emoji-pop');
+        void el.burstEmoji.offsetWidth; // Force reflow for replay
+        el.burstEmoji.classList.add('animate-emoji-pop');
+        setTimeout(() => {
+          el.burstEmoji.classList.add('hidden');
+        }, 1050);
+      }
+
+      // Natural blinking loop
+      function startBlinkLoop() {
+        setTimeout(() => {
+          isBlinking = true;
+          updateVisualState();
+          setTimeout(() => {
+            isBlinking = false;
+            updateVisualState();
+            startBlinkLoop();
+          }, 140);
+        }, 2500 + Math.random() * 2800);
+      }
+
+      /* ======================================================================
+         4. GEMINI TEXT + REAL VOICE TTS ENGINE (PCM16 -> WAV)
+         ====================================================================== */
+      function base64ToUint8Array(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return bytes;
+      }
+
+      function pcm16ToWavBlob(pcmBytes, sampleRate = 24000) {
+        const numChannels = 1;
+        const bitsPerSample = 16;
+        const byteRate = (sampleRate * numChannels * bitsPerSample) / 8;
+        const blockAlign = (numChannels * bitsPerSample) / 8;
+        const dataSize = pcmBytes.byteLength;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+
+        const writeStr = (offset, str) => {
+          for (let i = 0; i < str.length; i++) {
+            view.setUint8(offset + i, str.charCodeAt(i));
+          }
+        };
+
+        writeStr(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeStr(8, 'WAVE');
+        writeStr(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, bitsPerSample, true);
+        writeStr(36, 'data');
+        view.setUint32(40, dataSize, true);
+
+        new Uint8Array(buffer, 44).set(pcmBytes);
+        return new Blob([buffer], { type: 'audio/wav' });
+      }
+
+      async function fetchWithBackoff(url, options, retries = 2) {
+        let delay = 800;
+        for (let attempt = 0; attempt <= retries; attempt++) {
+          const res = await fetch(url, options);
+          if (res.ok || (res.status !== 429 && res.status < 500) || attempt === retries) {
+            return res;
+          }
+          await new Promise((r) => setTimeout(r, delay));
+          delay *= 2;
+        }
+        throw new Error('Request failed');
+      }
+
+      function buildSystemInstruction() {
+        return `You are ${settings.robotName}, the friendly, playful robot version of Teacher Koi!
+You are having a live voice conversation with young students just for fun.
+Rules:
+- Keep every reply short, warm, energetic, and easy to understand (1 to 3 short sentences).
+- Speak naturally with NO markdown, NO bullet points, NO asterisks, and NO emojis.
+- Your 3 famous magic words are: "CARBONARA!", "PIZZA!!!", and "BABUBABU!". If a student says any of them, get super excited and joke about them!
+- Occasionally ask a fun follow-up question to keep the student talking in English.
+${settings.personaNote ? `Extra Teacher Notes: ${settings.personaNote}` : ''}`;
+      }
+
+      function generateLocalFallbackReply(userText) {
+        const t = userText.toLowerCase();
+        if (t.includes('carbonara')) return MAGIC_DATA.carbonara.lines[0];
+        if (t.includes('pizza')) return MAGIC_DATA.pizza.lines[0];
+        if (t.includes('babu')) return MAGIC_DATA.babubabu.lines[0];
+        if (t.includes('hello') || t.includes('hi') || t.includes('hey')) {
+          return `Hello superstar! I am ${settings.robotName}! How are you feeling today?`;
+        }
+        if (t.includes('name') || t.includes('who are you')) {
+          return `I am ${settings.robotName}, the robot version of Teacher Koi! Do you like pizza or carbonara?`;
+        }
+        if (t.includes('bye') || t.includes('goodbye') || t.includes('see you')) {
+          return `Bye bye superstar! Keep smiling and remember... BABUBABU! See you next time!`;
+        }
+        if (t.includes('food') || t.includes('hungry') || t.includes('eat')) {
+          return `Ooh, now I am hungry too! I love carbonara and pizza! What is your favorite food?`;
+        }
+        if (t.includes('joke') || t.includes('funny')) {
+          return `Why did the robot eat pizza? Because it wanted a mega-byte! Hahaha! Babubabu!`;
+        }
+        const defaults = [
+          'Whoa, that is super cool! Tell Robot T.Koi more about that!',
+          'Awesome job speaking English, superstar! What else did you do today?',
+          'Beep boop! I love chatting with you! Do you like carbonara or pizza better?',
+        ];
+        return defaults[Math.floor(Math.random() * defaults.length)];
+      }
+
+      async function askGeminiText(userText) {
+        const apiKey = (settings.apiKey || '').trim();
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+        try {
+          const contents = [
+            ...history.slice(-8).map((turn) => ({
+              role: turn.role === 'robot' ? 'model' : 'user',
+              parts: [{ text: turn.text }],
+            })),
+            { role: 'user', parts: [{ text: userText }] },
+          ];
+
+          const res = await fetchWithBackoff(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: buildSystemInstruction() }] },
+              contents,
+              generationConfig: { temperature: 0.9, maxOutputTokens: 150 },
+            }),
+          });
+
+          if (!res.ok) throw new Error('Gemini API error');
+          const data = await res.json();
+          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+          if (!reply) throw new Error('Empty reply');
+          return reply.replace(/[*_#`]/g, '');
+        } catch {
+          return generateLocalFallbackReply(userText);
+        }
+      }
+
+      async function fetchGeminiTTSAudioUrl(text) {
+        if (!settings.useGeminiVoice) return null;
+        const apiKey = (settings.apiKey || '').trim();
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+        try {
+          const res = await fetchWithBackoff(
+            url,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: `Say cheerfully and playfully like a fun teacher robot: ${text}` }] }],
+                generationConfig: {
+                  responseModalities: ['AUDIO'],
+                  speechConfig: {
+                    voiceConfig: {
+                      prebuiltVoiceConfig: { voiceName: settings.voiceName || 'Puck' },
+                    },
+                  },
+                },
+                model: 'gemini-2.5-flash-preview-tts',
+              }),
+            },
+            1
+          );
+
+          if (!res.ok) return null;
+          const data = await res.json();
+          const part = data?.candidates?.[0]?.content?.parts?.[0];
+          const audioData = part?.inlineData?.data;
+          const mimeType = part?.inlineData?.mimeType || '';
+          if (!audioData || !mimeType.startsWith('audio/')) return null;
+
+          const rateMatch = mimeType.match(/rate=(\d+)/);
+          const sampleRate = rateMatch ? parseInt(rateMatch[1], 10) : 24000;
+          const pcmBytes = base64ToUint8Array(audioData);
+          const wavBlob = pcm16ToWavBlob(pcmBytes, sampleRate);
+          return URL.createObjectURL(wavBlob);
+        } catch {
+          return null;
+        }
+      }
+
+      /* ======================================================================
+         5. AUDIO PLAYBACK, MICROPHONE METER & LIVE VOICE RECOGNITION
+         ====================================================================== */
+      function stopAudioPlayback() {
+        if (audioEl) {
+          audioEl.pause();
+          audioEl = null;
+        }
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+          audioUrl = null;
+        }
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      }
+
+      function stopMicMeter() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        if (micStream) {
+          micStream.getTracks().forEach((t) => t.stop());
+          micStream = null;
+        }
+        if (audioCtx) {
+          audioCtx.close().catch(() => {});
+          audioCtx = null;
+        }
+        el.listeningHalo.style.transform = 'scale(1)';
+      }
+
+      async function startMicMeter() {
+        try {
+          if (!navigator.mediaDevices?.getUserMedia) return;
+          micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioCtx();
+          const analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 256;
+          const source = audioCtx.createMediaStreamSource(micStream);
+          source.connect(analyser);
+          const data = new Uint8Array(analyser.frequencyBinCount);
+
+          const tick = () => {
+            if (!isLive) return;
+            analyser.getByteFrequencyData(data);
+            const avg = data.reduce((a, b) => a + b, 0) / data.length / 160;
+            const level = isMuted ? 0 : Math.min(1, avg);
+            el.listeningHalo.style.transform = `scale(${1 + level * 0.22})`;
+            rafId = requestAnimationFrame(tick);
+          };
+          tick();
+        } catch {
+          // Optional visual halo
+        }
+      }
+
+      function stopRecognition() {
+        if (recognition) {
+          recognition.onend = null;
+          try {
+            recognition.abort();
+          } catch {
+            // Ignore
+          }
+          recognition = null;
+        }
+      }
+
+      function startRecognition() {
+        if (!isLive || isMuted) return;
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRec) {
+          showError('Live microphone works best in Chrome, Edge, or Safari.');
+          return;
+        }
+
+        stopRecognition();
+
+        try {
+          const rec = new SpeechRec();
+          rec.lang = 'en-US';
+          rec.interimResults = true;
+          rec.continuous = false;
+
+          rec.onstart = () => {
+            if (isLive) setStatus('listening');
+          };
+
+          rec.onresult = (event) => {
+            let interim = '';
+            let finalText = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+              const piece = event.results[i][0].transcript;
+              if (event.results[i].isFinal) finalText += piece;
+              else interim += piece;
+            }
+            const shown = interim || finalText;
+            if (shown) {
+              el.studentSpeechText.textContent = `🎤 You said: "${shown}"`;
+              el.studentSpeechText.classList.remove('hidden');
+            }
+            if (finalText.trim()) {
+              rec.stop();
+              handleStudentMessage(finalText.trim());
+            }
+          };
+
+          rec.onerror = (e) => {
+            if (e.error === 'not-allowed') {
+              showError('Please allow microphone access so Robot T.Koi can hear you!');
+              endConversation();
+            }
+          };
+
+          rec.onend = () => {
+            if (isLive && !isMuted && status === 'listening') {
+              setTimeout(() => {
+                if (isLive && !isMuted && status === 'listening') {
+                  try {
+                    rec.start();
+                  } catch {
+                    // Ignore already started
+                  }
+                }
+              }, 250);
+            }
+          };
+
+          recognition = rec;
+          rec.start();
+        } catch {
+          // Ignore start race
+        }
+      }
+
+      async function speakText(text, resumeListeningAfter = true) {
+        stopAudioPlayback();
+        stopRecognition();
+        currentRobotSpeech = text;
+        el.robotSpeechText.textContent = text;
+        setStatus('speaking');
+
+        const finishSpeaking = () => {
+          if (isLive && resumeListeningAfter && !isMuted) {
+            setStatus('listening');
+            startRecognition();
+          } else if (!isLive) {
+            setStatus('idle');
+          } else {
+            setStatus('listening');
+          }
+        };
+
+        const ttsUrl = await fetchGeminiTTSAudioUrl(text);
+        if (ttsUrl) {
+          audioUrl = ttsUrl;
+          audioEl = new Audio(ttsUrl);
+          audioEl.onended = finishSpeaking;
+          audioEl.onerror = finishSpeaking;
+          try {
+            await audioEl.play();
+            return;
+          } catch {
+            // Fall back to browser speechSynthesis
+          }
+        }
+
+        if (window.speechSynthesis) {
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'en-US';
+          utter.rate = 1.03;
+          utter.pitch = 1.12;
+          utter.onend = finishSpeaking;
+          utter.onerror = finishSpeaking;
+          window.speechSynthesis.speak(utter);
+        } else {
+          setTimeout(finishSpeaking, 1600);
+        }
+      }
+
+      async function handleStudentMessage(spokenText) {
+        setStatus('thinking');
+        history = [...history.slice(-10), { role: 'student', text: spokenText }];
+        const reply = await askGeminiText(spokenText);
+        history = [...history.slice(-10), { role: 'robot', text: reply }];
+        speakText(reply, true);
+      }
+
+      async function startConversation() {
+        showError('');
+        el.studentSpeechText.classList.add('hidden');
+        isLive = true;
+        isMuted = false;
+        updateVisualState();
+        await startMicMeter();
+        const greeting = `Hello superstars! I am ${settings.robotName}! Let's chat! What is your name?`;
+        history = [{ role: 'robot', text: greeting }];
+        speakText(greeting, true);
+      }
+
+      function endConversation() {
+        isLive = false;
+        isMuted = false;
+        el.studentSpeechText.classList.add('hidden');
+        stopRecognition();
+        stopAudioPlayback();
+        stopMicMeter();
+        setStatus('idle');
+      }
+
+      /* ======================================================================
+         6. EVENT LISTENERS & SETTINGS MODAL
+         ====================================================================== */
+      el.startTalkBtn.addEventListener('click', startConversation);
+      el.endChatBtn.addEventListener('click', endConversation);
+
+      el.muteMicBtn.addEventListener('click', () => {
+        isMuted = !isMuted;
+        updateVisualState();
+        if (isMuted) {
+          stopRecognition();
+        } else if (isLive && status !== 'speaking') {
+          startRecognition();
+        }
+      });
+
+      el.replayVoiceBtn.addEventListener('click', () => {
+        speakText(currentRobotSpeech, isLive);
+      });
+
+      el.robotTapBtn.addEventListener('click', () => {
+        isHeadTapped = true;
+        updateVisualState();
+        triggerBurst('✨');
+        setTimeout(() => {
+          isHeadTapped = false;
+          updateVisualState();
+        }, 650);
+        const line = TAP_HEAD_LINES[Math.floor(Math.random() * TAP_HEAD_LINES.length)];
+        speakText(line, isLive);
+      });
+
+      document.querySelectorAll('.magic-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-magic');
+          const data = MAGIC_DATA[key];
+          if (!data) return;
+          triggerBurst(data.emoji);
+          const line = data.lines[Math.floor(Math.random() * data.lines.length)];
+          history = [...history.slice(-10), { role: 'robot', text: line }];
+          speakText(line, isLive);
+        });
+      });
+
+      function openSettingsModal() {
+        el.inputApiKey.value = settings.apiKey || '';
+        el.inputRobotName.value = settings.robotName || DEFAULT_SETTINGS.robotName;
+        el.inputBadgeName.value = settings.badgeName || DEFAULT_SETTINGS.badgeName;
+        el.inputUseGeminiVoice.checked = !!settings.useGeminiVoice;
+        el.inputVoiceName.value = settings.voiceName || DEFAULT_SETTINGS.voiceName;
+        el.inputPersonaNote.value = settings.personaNote || '';
+        el.voiceSelectWrap.classList.toggle('hidden', !el.inputUseGeminiVoice.checked);
+        el.settingsModal.classList.remove('hidden');
+      }
+
+      function closeSettingsModal() {
+        el.settingsModal.classList.add('hidden');
+      }
+
+      el.openSettingsBtn.addEventListener('click', openSettingsModal);
+      el.closeSettingsBtn.addEventListener('click', closeSettingsModal);
+      el.settingsModal.addEventListener('click', (e) => {
+        if (e.target === el.settingsModal) closeSettingsModal();
+      });
+
+      el.inputUseGeminiVoice.addEventListener('change', () => {
+        el.voiceSelectWrap.classList.toggle('hidden', !el.inputUseGeminiVoice.checked);
+      });
+
+      el.resetSettingsBtn.addEventListener('click', () => {
+        el.inputApiKey.value = '';
+        el.inputRobotName.value = DEFAULT_SETTINGS.robotName;
+        el.inputBadgeName.value = DEFAULT_SETTINGS.badgeName;
+        el.inputUseGeminiVoice.checked = true;
+        el.inputVoiceName.value = DEFAULT_SETTINGS.voiceName;
+        el.inputPersonaNote.value = DEFAULT_SETTINGS.personaNote;
+        el.voiceSelectWrap.classList.remove('hidden');
+      });
+
+      el.settingsForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveSettings({
+          apiKey: el.inputApiKey.value.trim(),
+          robotName: el.inputRobotName.value.trim() || DEFAULT_SETTINGS.robotName,
+          badgeName: el.inputBadgeName.value.trim() || DEFAULT_SETTINGS.badgeName,
+          useGeminiVoice: el.inputUseGeminiVoice.checked,
+          voiceName: el.inputVoiceName.value || DEFAULT_SETTINGS.voiceName,
+          personaNote: el.inputPersonaNote.value.trim(),
+        });
+        closeSettingsModal();
+      });
+
+      // Initialize UI on load
+      applySettingsToUI();
+      startBlinkLoop();
+    })();
+  </script>
+</body>
+</html>
